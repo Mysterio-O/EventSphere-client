@@ -3,6 +3,7 @@ import { NavLink } from 'react-router';
 import logo from '../../assets/logo.png'
 import { AuthContext } from '../../provider/AuthProvider';
 import { AnimatePresence, motion } from 'motion/react';
+import Swal from 'sweetalert2';
 
 // Navigation links array
 const navLinks = [
@@ -22,8 +23,27 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setIsMenuOpen(false);
-    
-    logout();
+    Swal.fire({
+      title: "Are You sure?",
+      text: "You will be logged out.",
+      icon: 'warning',
+      confirmButtonText: "Yes, Log out.",
+      confirmButtonColor: 'Red',
+      showCancelButton: true,
+      cancelButtonColor: 'green'
+    }).then(result => {
+      if (result.isConfirmed) {
+        logout();
+        Swal.fire({
+          text: 'Logged out successfully.',
+          icon: 'success',
+          timer: 2000,
+          toast: true,
+          position: 'top'
+        })
+      }
+    })
+
   }
 
   return (
@@ -99,15 +119,15 @@ const Navbar = () => {
         user && <AnimatePresence>
           {
             isMenuOpen && <motion.div
-              initial={{ scale: 0.95,y:-30, opacity: 0 }}
-              animate={{ scale: 1,y:0, opacity: 1 }}
-              exit={{ scale: 0.95,y:-30, opacity: 0 }}
+              initial={{ scale: 0.95, y: -30, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: -30, opacity: 0 }}
               transition={{ duration: 0.5, ease: 'easeInOut' }}
               className='absolute right-10 
         top-25 bg-black/40 backdrop-blur-md px-4 py-2 rounded-2xl flex gap-2 flex-col justify-center items-center z-50'>
               <p className='text-black text-xl'>{user?.displayName}</p>
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="btn btn-block btn-secondary hover:bg-black hover:text-white transition-colors duration-300">
                 Log Out
               </button>

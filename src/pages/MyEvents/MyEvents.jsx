@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../provider/AuthProvider';
 import Swal from 'sweetalert2';
 import MyEventCard from './MyEventCard';
+import EmptyState from './EmptyState';
 
 const MyEvents = () => {
 
@@ -43,7 +44,7 @@ const MyEvents = () => {
     );
     console.log(filteredEvents);
 
-    
+
     return (
         <div className='px-4 py-8 max-w-7xl mx-auto'>
             <div className='mb-20 flex justify-between items-start gap-4 flex-wrap'>
@@ -69,11 +70,14 @@ const MyEvents = () => {
                     />
                 </label>
             </div>
-            <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-{
-    filteredEvents.map((event,idx) => <MyEventCard key={event?._id} event={event} idx={idx}/>)
-}
-            </div>
+            {
+                filteredEvents.length < 1 ? <EmptyState />
+                    : <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+                        {
+                            filteredEvents.map((event, idx) => <MyEventCard key={event?._id} event={event} idx={idx} />)
+                        }
+                    </div>
+            }
         </div>
     );
 };

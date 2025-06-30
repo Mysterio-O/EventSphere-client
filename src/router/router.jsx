@@ -7,10 +7,13 @@ import AddEvent from "../pages/AddEvent/AddEvent";
 import PrivateRoute from "../routes/PrivateRoute"
 import Events from "../pages/AllEvents/Events";
 import MyEvents from "../pages/MyEvents/MyEvents";
+import UpdateEvent from "../pages/UpdateEvent/UpdateEvent";
+import Page404 from "../pages/Page404";
 export const router = createBrowserRouter([
     {
         path: '/',
         Component: RootLayout,
+        errorElement: <Page404 />,
         children: [
             {
                 index: true,
@@ -40,6 +43,12 @@ export const router = createBrowserRouter([
                 path: '/my-event',
                 element: <PrivateRoute>
                     <MyEvents />
+                </PrivateRoute>
+            },
+            {
+                path: '/updateEvent/:id',
+                element: <PrivateRoute>
+                    <UpdateEvent />
                 </PrivateRoute>
             }
         ]

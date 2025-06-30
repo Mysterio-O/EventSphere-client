@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { Link } from 'react-router';
 
 const MyEventCard = ({event,idx}) => {
 
@@ -35,12 +36,13 @@ const MyEventCard = ({event,idx}) => {
                 <span className='font-semibold'>Event Description:</span> {event.eventDescription}
             </p>
             <div className='flex justify-end gap-2'>
-                <button
+                <Link
+                to={`/updateEvent/${event?._id}`}
                 className='btn btn-primary rounded-xl hover:bg-black hover:text-white transition-colors duration-300'
-                >Update</button>
-                <button
+                >Update</Link>
+                <Link
                 className='btn border-2 border-red-500 px-4 py-2 rounded-xl hover:bg-red-500 hover:text-white transition-colors duration-300'
-                >Delete</button>
+                >Delete</Link>
             </div>
         </motion.div>
     );
