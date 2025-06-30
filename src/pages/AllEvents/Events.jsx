@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../provider/AuthProvider';
 import Swal from 'sweetalert2';
-import { motion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
+import { HiOutlineSortDescending, HiOutlineSortAscending } from "react-icons/hi";
 
 const Events = () => {
     const [allEvents, setAllEvents] = useState([]);
@@ -10,8 +11,12 @@ const Events = () => {
 
     const [searchValue, setSearchValue] = useState('');
 
+    const [sort, setSort] = useState('');
+
+    const [isSortOpen, setIsSortOpen] = useState(false);
+
     useEffect(() => {
-        fetch('http://localhost:3000/events')
+        fetch(`http://localhost:3000/events?filterByDate=${sort}`)
             .then(res => res.json())
             .then(data => {
                 setAllEvents(data?.events || []);
@@ -23,7 +28,7 @@ const Events = () => {
             .catch(err => {
                 console.log('Error fetching all events:', err);
             });
-    }, [user?.email]);
+    }, [user?.email,sort]);
 
     const formatDateTime = (dateStr, timeStr) => {
         const date = new Date(`${dateStr}T${timeStr}`);
@@ -83,25 +88,40 @@ const Events = () => {
         });
     };
 
-    // console.log(allEvents);
-
-    // if (searchValue) {
-    //     const result = allEvents.filter(event => {
-    //         event.eventTitle.toLowerCase().includes(searchValue.toLowerCase())
-    //     });
-    //     console.log(result);
-    // }
     const filteredEvents = allEvents.filter(event =>
         event.eventTitle.toLowerCase().includes(searchValue.toLowerCase())
     );
     console.log(filteredEvents);
 
 
+    const handleSortToday = () => {
+        setSort('today');
+    }
+
+    const handleSortLastWeek = async () => {
+        setSort('lastWeek');
+    }
+
+    const handleSortLastMonth = () => {
+        setSort('lastMonth')
+    }
+    const handleSortCurrentMonth = () => {
+        setSort('currentMonth');
+    }
+
+    const handleSortDefault = () => {
+        setSort('')
+    }
+
+    console.log(sort);
+
+
     return (
         <div className=" px-4 py-8 max-w-7xl mx-auto">
 
-            <div className='mb-10'>
-                <label className="input bg-gray-300 rounded-xl">
+            <div className='mb-20 flex justify-between items-start gap-4 flex-wrap'>
+                {/* Search Input */}
+                <label className="input bg-gray-300 rounded-xl flex items-center gap-2">
                     <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <g
                             strokeLinejoin="round"
@@ -118,9 +138,65 @@ const Events = () => {
                         onChange={(e) => setSearchValue(e.target.value)}
                         type="search"
                         placeholder="Search"
+                        className="bg-transparent outline-none"
                     />
                 </label>
+
+                {/* Sort Section */}
+                <div className='flex flex-col items-end'>
+                    <button
+                        onClick={() => setIsSortOpen(!isSortOpen)}
+                        className="btn btn-primary px-6 py-2 rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition duration-200 ease-in-out mb-3 text-xl flex items-center gap-2"
+                    >
+                        {!isSortOpen ? 'Sort' : 'Collapse'}
+                        {!isSortOpen
+                            ? <HiOutlineSortDescending size={24} />
+                            : <HiOutlineSortAscending size={24} />
+                        }
+                    </button>
+
+                    <AnimatePresence>
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            transition={{ duration: 1, ease: 'easeInOut' }}
+                            className={`${!isSortOpen ? 'hidden' : 'flex'} justify-center gap-2 absolute top-45`}>
+                            <button
+                                onClick={handleSortToday}
+                                className="btn btn-primary capitalize px-5 py-2.5 text-base font-medium rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm transition-all duration-200 mb-2"
+                            >
+                                sort by today
+                            </button>
+                            <button
+                                onClick={handleSortLastWeek}
+                                className="btn btn-primary capitalize px-5 py-2.5 text-base font-medium rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm transition-all duration-200 mb-2"
+                            >
+                                sort by last week
+                            </button>
+                            <button
+                                onClick={handleSortLastMonth}
+                                className="btn btn-primary capitalize px-5 py-2.5 text-base font-medium rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm transition-all duration-200 mb-2"
+                            >
+                                sort by last month
+                            </button>
+                            <button
+                                onClick={handleSortCurrentMonth}
+                                className="btn btn-primary capitalize px-5 py-2.5 text-base font-medium rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm transition-all duration-200"
+                            >
+                                sort by current month
+                            </button>
+                            <button
+                                onClick={handleSortDefault}
+                                className="btn btn-primary capitalize px-5 py-2.5 text-base font-medium rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm transition-all duration-200"
+                            >
+                                sort by default
+                            </button>
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
             </div>
+
 
             <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
                 {filteredEvents.map((event, idx) => {
