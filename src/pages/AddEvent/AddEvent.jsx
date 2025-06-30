@@ -19,6 +19,7 @@ const AddEvent = () => {
         const time = form?.time.value;
         const attendeeCount = parseInt(form?.attendeeCount.value);
         const description = form?.description.value;
+        const location = form?.location.value;
 
         const newEvent = {
             eventTitle: title,
@@ -27,7 +28,8 @@ const AddEvent = () => {
             eventDate: date,
             eventTime: time,
             attendeeCount,
-            eventDescription: description
+            eventDescription: description,
+            location
         }
 
         console.log(newEvent);
@@ -44,6 +46,7 @@ const AddEvent = () => {
                 .then(data => {
                     console.log(data);
                     if (data?.result?.acknowledged || data?.result?.insertedId) {
+                        form.reset();
                         return Swal.fire({
                             title: 'Added!',
                             text: 'Event added successfully!',
@@ -116,7 +119,7 @@ const AddEvent = () => {
 
                     <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                         {/* title */}
-                        <div className="mb-4">
+                        <div className="flex flex-col justify-around">
                             <label className="label text-neutral">
                                 <span className="label-text">Title</span>
                             </label>
@@ -130,7 +133,7 @@ const AddEvent = () => {
                         </div>
 
                         {/* name */}
-                        <div className="mb-4">
+                        <div className="flex flex-col justify-around">
                             <label className="label text-neutral">
                                 <span className="label-text">Name</span>
                             </label>
@@ -144,7 +147,7 @@ const AddEvent = () => {
                         </div>
 
                         {/* email */}
-                        <div className="mb-4">
+                        <div className="flex flex-col justify-around">
                             <label className="label text-neutral">
                                 <span className="label-text">Email</span>
                             </label>
@@ -158,7 +161,7 @@ const AddEvent = () => {
                         </div>
 
                         {/* date */}
-                        <div className="mb-4">
+                        <div className="flex flex-col justify-around">
                             <label className="label text-neutral">
                                 <span className="label-text">Date</span>
                             </label>
@@ -171,7 +174,7 @@ const AddEvent = () => {
                         </div>
 
                         {/* time */}
-                        <div className="mb-6">
+                        <div className="flex flex-col justify-around">
                             <label className="label text-neutral">
                                 <span className="label-text">Time</span>
                             </label>
@@ -184,7 +187,7 @@ const AddEvent = () => {
                         </div>
 
                         {/* count */}
-                        <div className="mb-6">
+                        <div className="flex flex-col justify-around">
                             <label className="label text-neutral">
                                 <span className="label-text">Attendee Count</span>
                             </label>
@@ -199,7 +202,7 @@ const AddEvent = () => {
                     </div>
 
                     {/* location */}
-                    <div className="mb-6">
+                    <div className="flex flex-col justify-around">
                         <label className="label text-neutral">
                             <span className="label-text">Event Location</span>
                         </label>
@@ -212,7 +215,7 @@ const AddEvent = () => {
                     </div>
 
                     {/* description */}
-                    <div className="mb-6">
+                    <div className="flex flex-col justify-around">
                         <label className="label text-neutral">
                             <span className="label-text">Short Description</span>
                         </label>
@@ -224,7 +227,7 @@ const AddEvent = () => {
                             className="textarea textarea-bordered w-full bg-accent text-neutral outline-1 rounded-xs"
                         />
                     </div>
-                    <button className="btn w-full bg-highlight text-neutral hover:bg-black hover:text-white transition-colors duration-300" >
+                    <button className="btn w-full bg-highlight text-neutral hover:bg-black hover:text-white transition-colors duration-300 mt-2" >
                         Add Event
                     </button>
                 </form>

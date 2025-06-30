@@ -3,6 +3,7 @@ import { AuthContext } from '../../provider/AuthProvider';
 import Swal from 'sweetalert2';
 import { AnimatePresence, motion } from 'motion/react';
 import { HiOutlineSortDescending, HiOutlineSortAscending } from "react-icons/hi";
+import EmptyPage from './EmptyPage';
 
 const Events = () => {
     const [allEvents, setAllEvents] = useState([]);
@@ -28,7 +29,7 @@ const Events = () => {
             .catch(err => {
                 console.log('Error fetching all events:', err);
             });
-    }, [user?.email,sort]);
+    }, [user?.email, sort]);
 
     const formatDateTime = (dateStr, timeStr) => {
         const date = new Date(`${dateStr}T${timeStr}`);
@@ -197,47 +198,50 @@ const Events = () => {
                 </div>
             </div>
 
-
-            <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-                {filteredEvents.map((event, idx) => {
-                    const isJoined = joinedEventIds.includes(event._id);
-                    return (
-                        <motion.div
-                            initial={{ scale: 1, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 0.3, ease: 'easeIn', delay: idx * 0.2 }}
-                            key={event._id}
-                            className="bg-white rounded-2xl shadow-md hover:shadow-xl p-6 transition-all duration-300">
-                            <h2 className="text-xl font-bold text-blue-600 mb-2">{event.eventTitle}</h2>
-                            <p className="text-sm text-gray-700 mb-1">
-                                <span className="font-semibold">Posted by:</span> {event.addedBy}
-                            </p>
-                            <p className="text-sm text-gray-700 mb-1">
-                                <span className="font-semibold">Date & Time:</span> {formatDateTime(event.eventDate, event.eventTime)}
-                            </p>
-                            <p className="text-sm text-gray-700 mb-1">
-                                <span className="font-semibold">Location:</span> {event.location}
-                            </p>
-                            <p className="text-sm text-gray-700 mb-2">
-                                <span className="font-semibold">Attendees:</span> {event.attendeeCount}
-                            </p>
-                            <p className="text-gray-600 text-sm mb-4">
-                                <span className='font-semibold'>Event Description:</span> {event.eventDescription}
-                            </p>
-                            <button
-                                disabled={isJoined}
-                                onClick={() => handleJoinEvent(event._id, event.eventTitle)}
-                                className={`px-4 py-2 rounded-md transition duration-200 
+            {
+                filteredEvents.length < 1 ? <EmptyPage keywords={searchValue}/>
+                    : <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+                        {filteredEvents.map((event, idx) => {
+                            const isJoined = joinedEventIds.includes(event._id);
+                            return (
+                                <motion.div
+                                    initial={{ scale: 1, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    transition={{ duration: 0.3, ease: 'easeIn', delay: idx * 0.2 }}
+                                    key={event._id}
+                                    className="bg-white rounded-2xl shadow-md hover:shadow-xl p-6 transition-all duration-300">
+                                    <h2 className="text-xl font-bold text-blue-600 mb-2">{event.eventTitle}</h2>
+                                    <p className="text-sm text-gray-700 mb-1">
+                                        <span className="font-semibold">Posted by:</span> {event.addedBy}
+                                    </p>
+                                    <p className="text-sm text-gray-700 mb-1">
+                                        <span className="font-semibold">Date & Time:</span> {formatDateTime(event.eventDate, event.eventTime)}
+                                    </p>
+                                    <p className="text-sm text-gray-700 mb-1">
+                                        <span className="font-semibold">Location:</span> {event.location}
+                                    </p>
+                                    <p className="text-sm text-gray-700 mb-2">
+                                        <span className="font-semibold">Attendees:</span> {event.attendeeCount}
+                                    </p>
+                                    <p className="text-gray-600 text-sm mb-4">
+                                        <span className='font-semibold'>Event Description:</span> {event.eventDescription}
+                                    </p>
+                                    <button
+                                        disabled={isJoined}
+                                        onClick={() => handleJoinEvent(event._id, event.eventTitle)}
+                                        className={`px-4 py-2 rounded-md transition duration-200 
                                 ${isJoined
-                                        ? 'bg-gray-400 text-white cursor-not-allowed'
-                                        : 'bg-blue-500 hover:bg-blue-600 text-white'}`}
-                            >
-                                {isJoined ? 'Joined' : 'Join Event'}
-                            </button>
-                        </motion.div>
-                    );
-                })}
-            </div>
+                                                ? 'bg-gray-400 text-white cursor-not-allowed'
+                                                : 'bg-blue-500 hover:bg-blue-600 text-white'}`}
+                                    >
+                                        {isJoined ? 'Joined' : 'Join Event'}
+                                    </button>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+            }
+
         </div>
     );
 };

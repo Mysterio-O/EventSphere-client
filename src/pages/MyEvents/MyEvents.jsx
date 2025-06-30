@@ -39,6 +39,12 @@ const MyEvents = () => {
 
     // console.log(myEvents);
 
+    const relocateEvents = (id)=> {
+        const newEvents = myEvents.filter(event => event?._id !== id);
+        setMyEvents(newEvents)
+    }
+
+
     const filteredEvents = myEvents.filter(event =>
         event.eventTitle.toLowerCase().includes(searchValue.toLowerCase())
     );
@@ -74,7 +80,7 @@ const MyEvents = () => {
                 filteredEvents.length < 1 ? <EmptyState />
                     : <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
                         {
-                            filteredEvents.map((event, idx) => <MyEventCard key={event?._id} event={event} idx={idx} />)
+                            filteredEvents.map((event, idx) => <MyEventCard key={event?._id} event={event} idx={idx} relocateEvents={relocateEvents}/>)
                         }
                     </div>
             }

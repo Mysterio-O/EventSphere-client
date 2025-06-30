@@ -47,7 +47,11 @@ const Navbar = () => {
   }
 
   return (
-    <div className="navbar bg-primary text-neutral shadow-lg px-4 md:px-6 lg:px-10">
+    <motion.div
+    initial={{scale:0.9,opacity:0}}
+    animate={{scale: 1,opacity:1}}
+    transition={{duration:0.3,ease:'linear'}}
+    className="navbar bg-primary text-neutral shadow-lg px-4 md:px-6 lg:px-10">
       {/* Logo and Website Name */}
       <div className="flex-1">
         <NavLink to="/" className="text-xl font-bold flex items-center gap-2">
@@ -178,7 +182,7 @@ const Navbar = () => {
           )}
         </ul>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
