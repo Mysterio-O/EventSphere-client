@@ -22,6 +22,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setIsMenuOpen(false);
+    
     logout();
   }
 
@@ -80,7 +81,7 @@ const Navbar = () => {
               </NavLink>
             </li>
           ) : (
-            <div>
+            <div className="relative">
               <div
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className='bg-black p-1 rounded-full'>
@@ -98,9 +99,9 @@ const Navbar = () => {
         user && <AnimatePresence>
           {
             isMenuOpen && <motion.div
-              initial={{ scale: 0.7, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.5, opacity: 0 }}
+              initial={{ scale: 0.95,y:-30, opacity: 0 }}
+              animate={{ scale: 1,y:0, opacity: 1 }}
+              exit={{ scale: 0.95,y:-30, opacity: 0 }}
               transition={{ duration: 0.5, ease: 'easeInOut' }}
               className='absolute right-10 
         top-25 bg-black/40 backdrop-blur-md px-4 py-2 rounded-2xl flex gap-2 flex-col justify-center items-center z-50'>

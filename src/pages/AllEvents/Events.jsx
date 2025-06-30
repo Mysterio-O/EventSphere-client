@@ -117,7 +117,7 @@ const Events = () => {
 
 
     return (
-        <div className=" px-4 py-8 max-w-7xl mx-auto">
+        <div className="px-4 py-8 max-w-7xl mx-auto">
 
             <div className='mb-20 flex justify-between items-start gap-4 flex-wrap'>
                 {/* Search Input */}
