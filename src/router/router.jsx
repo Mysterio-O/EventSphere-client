@@ -3,6 +3,8 @@ import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/Home/Home";
 import Login from "../components/Auth/Login";
 import Register from "../components/Auth/Register";
+import AddEvent from "../pages/AddEvent/AddEvent";
+import PrivateRoute from "../routes/PrivateRoute"
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -19,6 +21,12 @@ export const router = createBrowserRouter([
             {
                 path:'/auth/register',
                 Component:Register
+            },
+            {
+                path:'/add-event',
+                element: <PrivateRoute>
+                    <AddEvent/>
+                </PrivateRoute>
             }
         ]
     }

@@ -6,7 +6,7 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // 🔁 Custom observer to check login status on load
+    // Custom observer to check login status on load
     useEffect(() => {
         const checkAuth = async () => {
             try {
@@ -18,6 +18,7 @@ const AuthProvider = ({ children }) => {
                     setUser(data);
                 } else {
                     setUser(null);
+                    setLoading(false);
                 }
             } catch (err) {
                 console.error(err);
@@ -40,9 +41,9 @@ const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext value={{ user, setUser, logout, loading }}>
+        <AuthContext.Provider value={{ user, setUser, logout, loading }}>
             {children}
-        </AuthContext>
+        </AuthContext.Provider>
     );
 };
 

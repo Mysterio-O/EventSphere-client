@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { NavLink } from 'react-router';
 import logo from '../../assets/logo.png'
 import { AuthContext } from '../../provider/AuthProvider';
+import { AnimatePresence, motion } from 'motion/react';
 
 // Navigation links array
 const navLinks = [
@@ -13,7 +14,15 @@ const navLinks = [
 
 const Navbar = () => {
 
-  const { user } = useContext(AuthContext);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { user, logout } = useContext(AuthContext);
+
+
+  const handleLogout = () => {
+    setIsMenuOpen(false);
+    logout();
+  }
 
   return (
     <div className="navbar bg-primary text-neutral shadow-lg px-4 md:px-6 lg:px-10">
@@ -50,7 +59,7 @@ const Navbar = () => {
 
       {/* Desktop Menu */}
       <div className="flex-none hidden lg:flex">
-        <ul className="menu menu-horizontal px-1 overflow-hidden">
+        <ul className="menu menu-horizontal px-1 overflow-hidden flex items-center justify-center">
           {navLinks.map((link) => (
             <li key={link.name}>
               <NavLink
@@ -70,36 +79,40 @@ const Navbar = () => {
               </NavLink>
             </li>
           ) : (
-            <li>
-              <div className="dropdown dropdown-end">
-                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                  <div className="w-10 rounded-full">
-                    <img src={user.photoURL} alt="Profile" />
-                  </div>
-                </label>
-                <ul
-                  tabIndex={0}
-                  className="menu dropdown-content bg-accent text-neutral rounded-box w-52 shadow-lg"
-                >
-                  <li className="disabled">
-                    <span className="text-neutral">{user.name}</span>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/logout"
-                      className={({ isActive }) =>
-                        `hover:bg-highlight hover:text-neutral ${isActive ? 'bg-highlight text-neutral' : ''}`
-                      }
-                    >
-                      Logout
-                    </NavLink>
-                  </li>
-                </ul>
+            <div>
+              <div
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className='bg-black p-1 rounded-full'>
+                <img
+                  className='w-12 h-12 rounded-full cursor-pointer'
+                  src={user?.photoURL}
+                  alt={`${user?.displayName}'s photo`} />
               </div>
-            </li>
+            </div>
           )}
         </ul>
       </div>
+
+      {
+        user && <AnimatePresence>
+          {
+            isMenuOpen && <motion.div
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.7, opacity: 0 }}
+              transition={{ duration: 0.5, ease: 'easeInOut' }}
+              className='absolute right-10 
+        top-25 bg-black/40 backdrop-blur-md px-4 py-2 rounded-2xl flex gap-2 flex-col justify-center items-center'>
+              <p className='text-black text-xl'>{user?.name}</p>
+              <button
+                onClick={logout}
+                className="btn btn-block btn-secondary hover:bg-black hover:text-white transition-colors duration-300">
+                Log Out
+              </button>
+            </motion.div>
+          }
+        </AnimatePresence>
+      }
 
       {/* Mobile Drawer Menu */}
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
@@ -130,17 +143,14 @@ const Navbar = () => {
           ) : (
             <>
               <li className="disabled">
-                <span className="text-neutral">{user.name}</span>
+                <span className="text-white">{user?.name}</span>
               </li>
               <li>
-                <NavLink
-                  to="/logout"
-                  className={({ isActive }) =>
-                    `hover:bg-highlight hover:text-neutral ${isActive ? 'bg-highlight text-neutral' : ''}`
-                  }
-                >
-                  Logout
-                </NavLink>
+                <button
+                  onClick={handleLogout}
+                  className="btn btn-block btn-secondary hover:bg-black hover:text-white transition-colors duration-300">
+                  Log Out
+                </button>
               </li>
             </>
           )}

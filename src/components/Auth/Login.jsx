@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router';
+import React, { useContext, useState } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
+import { AuthContext } from '../../provider/AuthProvider';
 
 const Login = () => {
 
     const [inputErr, setInputErr] = useState('');
+
+    const location = useLocation();
+    console.log(location);
+
+    const { setUser } = useContext(AuthContext);
+
+    const navigate = useNavigate();
 
     const handleLogin = e => {
         e.preventDefault();
@@ -34,7 +42,46 @@ const Login = () => {
         })
             .then(res => res.json())
             .then(data => {
+
+                if (data?.message === 'No user found with the email address!') {
+                   return Swal.fire({
+                        title: 'Failed!',
+                        text: 'No account found with this email. Create a new account.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#FBBF24',
+                        customClass: {
+                            popup: 'bg-accent text-neutral',
+                            title: 'text-primary',
+                            confirmButton: 'bg-highlight hover:bg-secondary text-neutral',
+                        },
+                        didOpen: () => {
+                            const popup = Swal.getPopup();
+                            popup.style.borderRadius = '0.5rem';
+                        },
+                    });
+                }
+
+                if (data?.message === 'Unauthorized! Password didnt match') {
+                    return Swal.fire({
+                        title: 'Failed!',
+                        text: 'Password didnt match. Try again.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#FBBF24',
+                        customClass: {
+                            popup: 'bg-accent text-neutral',
+                            title: 'text-primary',
+                            confirmButton: 'bg-highlight hover:bg-secondary text-neutral',
+                        },
+                        didOpen: () => {
+                            const popup = Swal.getPopup();
+                            popup.style.borderRadius = '0.5rem';
+                        },
+                    });
+                }
                 console.log(data);
+                setUser(data?.user);
                 Swal.fire({
                     title: 'Login Successful!',
                     text: 'Welcome to EventSphere!.',
@@ -51,9 +98,11 @@ const Login = () => {
                         popup.style.borderRadius = '0.5rem';
                     },
                 });
+                navigate(`${location?.state ? location.state : '/'}`);
             })
             .catch(err => {
                 console.log(err);
+
                 Swal.fire({
                     title: 'Failed!',
                     text: 'Login failed!',

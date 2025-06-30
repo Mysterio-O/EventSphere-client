@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 
 const Register = () => {
 
+    const [passErr, setPassErr] = useState('');
     const navigate = useNavigate();
 
     const handleRegister = async e => {
@@ -31,16 +32,55 @@ const Register = () => {
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!name || !email || !password) {
-            alert('Please fill in all required fields');
-            return;
+            return Swal.fire({
+                title: 'Error!',
+                text: 'Please fill in all required fields',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#FBBF24',
+                customClass: {
+                    popup: 'bg-accent text-neutral',
+                    title: 'text-primary',
+                    confirmButton: 'bg-highlight hover:bg-secondary text-neutral',
+                },
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    popup.style.borderRadius = '0.5rem';
+                },
+            });
         }
         if (!emailRegex.test(email)) {
-            alert('Please enter a valid email address');
+            return Swal.fire({
+                title: 'Error!',
+                text: 'Please enter a valid email address',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#FBBF24',
+                customClass: {
+                    popup: 'bg-accent text-neutral',
+                    title: 'text-primary',
+                    confirmButton: 'bg-highlight hover:bg-secondary text-neutral',
+                },
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    popup.style.borderRadius = '0.5rem';
+                },
+            });
+        }
+        if (!/.{6,}/.test(password)) {
+            setPassErr("Password must be at least 6 characters");
             return;
         }
-        if (password.length < 6) {
-            alert('Password must be at least 6 characters');
+        else if (!/[a-z]/.test(password)) {
+            setPassErr("Password must contain at least 1 lowercase letter");
             return;
+        }
+        else if (!/[A-Z]/.test(password)) {
+            setPassErr('Password must contain at least one uppercase letter');
+            return;
+        }
+        else {
+            setPassErr('');
         }
 
         const userInfo = {
@@ -62,6 +102,26 @@ const Register = () => {
             })
                 .then(res => res.json())
                 .then(data => {
+
+                    if (data?.message === 'Email already in use!') {
+                        return Swal.fire({
+                            title: 'Registration filed!',
+                            text: 'Email is already in use! Try another one.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#FBBF24',
+                            customClass: {
+                                popup: 'bg-accent text-neutral',
+                                title: 'text-primary',
+                                confirmButton: 'bg-highlight hover:bg-secondary text-neutral',
+                            },
+                            didOpen: () => {
+                                const popup = Swal.getPopup();
+                                popup.style.borderRadius = '0.5rem';
+                            },
+                        });
+                    }
+
                     if (data?.result?.insertedId) {
                         Swal.fire({
                             title: 'Registration Successful!',
@@ -159,6 +219,9 @@ const Register = () => {
                             placeholder="Enter your photo URL"
                         />
                     </div>
+                    {
+                        passErr && <p className='text-red-500 text-sm'>{passErr}</p>
+                    }
                     <button className="btn w-full bg-highlight text-neutral hover:bg-black hover:text-white transition-colors duration-300" >
                         Sign Up
                     </button>
