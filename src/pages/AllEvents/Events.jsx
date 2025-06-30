@@ -94,8 +94,8 @@ const Events = () => {
     console.log(filteredEvents);
 
 
-    const handleSortToday = () => {
-        setSort('today');
+    const handleSortThisWeek = () => {
+        setSort('thisWeek');
     }
 
     const handleSortLastWeek = async () => {
@@ -163,10 +163,10 @@ const Events = () => {
                             transition={{ duration: 1, ease: 'easeInOut' }}
                             className={`${!isSortOpen ? 'hidden' : 'flex'} justify-center gap-2 absolute top-45`}>
                             <button
-                                onClick={handleSortToday}
+                                onClick={handleSortThisWeek}
                                 className="btn btn-primary capitalize px-5 py-2.5 text-base font-medium rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm transition-all duration-200 mb-2"
                             >
-                                sort by today
+                                sort by this week
                             </button>
                             <button
                                 onClick={handleSortLastWeek}
