@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router';
+import Swal from 'sweetalert2';
 
 const Login = () => {
 
@@ -28,14 +29,47 @@ const Login = () => {
             headers: {
                 'content-type': 'application/json'
             },
-            body: JSON.stringify(loginInfo)
+            body: JSON.stringify(loginInfo),
+            credentials: 'include'
         })
             .then(res => res.json())
             .then(data => {
                 console.log(data);
+                Swal.fire({
+                    title: 'Login Successful!',
+                    text: 'Welcome to EventSphere!.',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#FBBF24',
+                    customClass: {
+                        popup: 'bg-accent text-neutral',
+                        title: 'text-primary',
+                        confirmButton: 'bg-highlight hover:bg-secondary text-neutral',
+                    },
+                    didOpen: () => {
+                        const popup = Swal.getPopup();
+                        popup.style.borderRadius = '0.5rem';
+                    },
+                });
             })
             .catch(err => {
                 console.log(err);
+                Swal.fire({
+                    title: 'Failed!',
+                    text: 'Login failed!',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#FBBF24',
+                    customClass: {
+                        popup: 'bg-accent text-neutral',
+                        title: 'text-primary',
+                        confirmButton: 'bg-highlight hover:bg-secondary text-neutral',
+                    },
+                    didOpen: () => {
+                        const popup = Swal.getPopup();
+                        popup.style.borderRadius = '0.5rem';
+                    },
+                });
             })
 
     }

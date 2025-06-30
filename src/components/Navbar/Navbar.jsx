@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { NavLink } from 'react-router';
 import logo from '../../assets/logo.png'
+import { AuthContext } from '../../provider/AuthProvider';
 
 // Navigation links array
 const navLinks = [
@@ -11,12 +12,8 @@ const navLinks = [
 ];
 
 const Navbar = () => {
-  // Mock authentication state (replace with your auth logic)
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const user = {
-    name: 'John Doe',
-    photoURL: 'https://via.placeholder.com/40', // Replace with actual user photo URL
-  };
+
+  const { user } = useContext(AuthContext);
 
   return (
     <div className="navbar bg-primary text-neutral shadow-lg px-4 md:px-6 lg:px-10">
@@ -28,7 +25,7 @@ const Navbar = () => {
             alt="EventSphere Logo"
             className="w-40 h-8"
           />
-          
+
         </NavLink>
       </div>
 
@@ -66,7 +63,7 @@ const Navbar = () => {
               </NavLink>
             </li>
           ))}
-          {!isLoggedIn ? (
+          {!user ? (
             <li>
               <NavLink to="/auth/login" className="btn btn-secondary ml-4 hover:bg-black hover:text-white transition-colors duration-300">
                 Sign In
@@ -108,10 +105,13 @@ const Navbar = () => {
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
       <div className="drawer-side">
         <label htmlFor="my-drawer" className="drawer-overlay"></label>
-        <ul className="menu p-4 w-80 bg-accent text-neutral h-full">
+        <ul className="menu p-4 w-80 z-20 text-white bg-black h-full">
           {navLinks.map((link) => (
             <li key={link.name}>
               <NavLink
+                onClick={() => {
+                  document.getElementById('my-drawer').checked = false;
+                }}
                 to={link.path}
                 className={({ isActive }) =>
                   `text-neutral hover:text-highlight ${isActive ? 'text-highlight font-semibold' : ''}`
@@ -121,7 +121,7 @@ const Navbar = () => {
               </NavLink>
             </li>
           ))}
-          {!isLoggedIn ? (
+          {!user ? (
             <li>
               <NavLink to="/auth/login" className="btn btn-secondary mt-4">
                 Sign In
