@@ -18,6 +18,7 @@ const Navbar = () => {
 
   const { user, logout } = useContext(AuthContext);
 
+  console.log(user);
 
   const handleLogout = () => {
     setIsMenuOpen(false);
@@ -99,11 +100,11 @@ const Navbar = () => {
             isMenuOpen && <motion.div
               initial={{ scale: 0.7, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.7, opacity: 0 }}
+              exit={{ scale: 0.5, opacity: 0 }}
               transition={{ duration: 0.5, ease: 'easeInOut' }}
               className='absolute right-10 
-        top-25 bg-black/40 backdrop-blur-md px-4 py-2 rounded-2xl flex gap-2 flex-col justify-center items-center'>
-              <p className='text-black text-xl'>{user?.name}</p>
+        top-25 bg-black/40 backdrop-blur-md px-4 py-2 rounded-2xl flex gap-2 flex-col justify-center items-center z-50'>
+              <p className='text-black text-xl'>{user?.displayName}</p>
               <button
                 onClick={logout}
                 className="btn btn-block btn-secondary hover:bg-black hover:text-white transition-colors duration-300">
@@ -143,7 +144,7 @@ const Navbar = () => {
           ) : (
             <>
               <li className="disabled">
-                <span className="text-white">{user?.name}</span>
+                <span className="text-white">{user?.displayName}</span>
               </li>
               <li>
                 <button

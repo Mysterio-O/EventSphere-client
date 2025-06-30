@@ -5,6 +5,7 @@ import Login from "../components/Auth/Login";
 import Register from "../components/Auth/Register";
 import AddEvent from "../pages/AddEvent/AddEvent";
 import PrivateRoute from "../routes/PrivateRoute"
+import Events from "../pages/AllEvents/Events";
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -19,13 +20,19 @@ export const router = createBrowserRouter([
                 Component: Login
             },
             {
-                path:'/auth/register',
-                Component:Register
+                path: '/auth/register',
+                Component: Register
             },
             {
-                path:'/add-event',
+                path: '/add-event',
                 element: <PrivateRoute>
-                    <AddEvent/>
+                    <AddEvent />
+                </PrivateRoute>
+            },
+            {
+                path: '/events',
+                element: <PrivateRoute>
+                    <Events />
                 </PrivateRoute>
             }
         ]

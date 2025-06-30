@@ -198,6 +198,18 @@ const AddEvent = () => {
                         </div>
                     </div>
 
+                    {/* location */}
+                    <div className="mb-6">
+                        <label className="label text-neutral">
+                            <span className="label-text">Event Location</span>
+                        </label>
+                        <input
+                            type="text"
+                            required
+                            name="location"
+                            className="input input-bordered w-full bg-accent text-neutral outline-1 rounded-xs"
+                        />
+                    </div>
 
                     {/* description */}
                     <div className="mb-6">
