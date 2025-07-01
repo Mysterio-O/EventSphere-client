@@ -42,3 +42,16 @@ This is a platform to find, join or create events.
 #### Developer experience
 
  - This was the very first project of mine where I tried to create my own email/pass based authentication system. Yeah, it was a bit challenging, handling login and register was quite easy. The thing auth state change observing was the real hard part. I am happy, i did this. This was a nice experience.
+
+
+## Dependencies 
+- "@tailwindcss/vite": "^4.1.11"
+- "axios": "^1.10.0"
+- "motion": "^12.19.2"
+- "react": "^19.1.0"
+- "react-calendar": "^6.0.0"
+- "react-dom": "^19.1.0"
+- "react-icons": "^5.5.0"
+- "react-router": "^7.6.3"
+- "sweetalert2": "^11.22.2"
+- "tailwindcss": "^4.1.11"
