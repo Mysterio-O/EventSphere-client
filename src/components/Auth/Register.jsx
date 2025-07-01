@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 
@@ -6,6 +6,10 @@ const Register = () => {
 
     const [passErr, setPassErr] = useState('');
     const navigate = useNavigate();
+
+    useEffect(()=>{
+            document.title = "EventSphere Register"
+        },[])
 
     const handleRegister = async e => {
         e.preventDefault();

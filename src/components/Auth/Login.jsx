@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../../provider/AuthProvider';
@@ -9,6 +9,10 @@ const Login = () => {
 
     const location = useLocation();
     console.log(location);
+
+    useEffect(()=>{
+        document.title = "EventSphere Login"
+    },[])
 
     const { setUser } = useContext(AuthContext);
 

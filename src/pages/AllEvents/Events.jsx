@@ -33,6 +33,10 @@ const Events = () => {
             });
     }, [user?.email, sort]);
 
+    useEffect(()=> {
+        document.title = "All Events"
+    },[])
+
     const formatDateTime = (dateStr, timeStr) => {
         const date = new Date(`${dateStr}T${timeStr}`);
         return date.toLocaleString('en-US', {

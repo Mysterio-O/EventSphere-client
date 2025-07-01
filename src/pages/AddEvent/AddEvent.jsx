@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../../provider/AuthProvider';
 import { motion } from 'motion/react';
 import Swal from 'sweetalert2';
@@ -7,6 +7,10 @@ const AddEvent = () => {
 
     const { user } = useContext(AuthContext);
     console.log(user);
+
+    useEffect(()=>{
+            document.title = "Add Events"
+        },[])
 
     const handleAddEvent = e => {
         e.preventDefault();

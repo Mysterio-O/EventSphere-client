@@ -12,6 +12,10 @@ const MyEvents = () => {
 
     const [searchValue, setSearchValue] = useState('');
 
+    useEffect(()=>{
+            document.title = "My Events"
+        },[])
+
     useEffect(() => {
         fetch(`https://event-sphere-server.vercel.app/events?email=${user?.email}`)
             .then(res => res.json())
