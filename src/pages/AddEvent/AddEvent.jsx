@@ -35,12 +35,13 @@ const AddEvent = () => {
         console.log(newEvent);
 
         if (newEvent) {
-            fetch('http://localhost:3000/addEvent', {
+            fetch('https://event-sphere-server.vercel.app/addEvent', {
                 method: "POST",
                 headers: {
                     'content-type': 'application/json'
                 },
-                body: JSON.stringify(newEvent)
+                body: JSON.stringify(newEvent),
+                credentials: 'include'
             })
                 .then(res => res.json())
                 .then(data => {

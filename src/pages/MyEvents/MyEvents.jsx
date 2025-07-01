@@ -13,7 +13,7 @@ const MyEvents = () => {
     const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
-        fetch(`http://localhost:3000/events?email=${user?.email}`)
+        fetch(`https://event-sphere-server.vercel.app/events?email=${user?.email}`)
             .then(res => res.json())
             .then(data => {
                 setMyEvents(data?.events)
@@ -39,7 +39,7 @@ const MyEvents = () => {
 
     // console.log(myEvents);
 
-    const relocateEvents = (id)=> {
+    const relocateEvents = (id) => {
         const newEvents = myEvents.filter(event => event?._id !== id);
         setMyEvents(newEvents)
     }
@@ -80,7 +80,7 @@ const MyEvents = () => {
                 filteredEvents.length < 1 ? <EmptyState />
                     : <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
                         {
-                            filteredEvents.map((event, idx) => <MyEventCard key={event?._id} event={event} idx={idx} relocateEvents={relocateEvents}/>)
+                            filteredEvents.map((event, idx) => <MyEventCard key={event?._id} event={event} idx={idx} relocateEvents={relocateEvents} />)
                         }
                     </div>
             }

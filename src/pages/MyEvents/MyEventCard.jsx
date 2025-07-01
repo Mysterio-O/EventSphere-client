@@ -27,11 +27,12 @@ const MyEventCard = ({ event, idx, relocateEvents }) => {
             cancelButtonColor: "green"
         }).then(result => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/delete-event/${id}`, {
+                fetch(`https://event-sphere-server.vercel.app/delete-event/${id}`, {
                     method: "DELETE",
                     headers: {
                         'content-type': 'application/json'
-                    }
+                    },
+                    credentials: 'include'
                 })
                     .then(res => res.json())
                     .then(data => {

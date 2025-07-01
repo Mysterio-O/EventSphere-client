@@ -16,7 +16,9 @@ const UpdateEvent = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:3000/event/${id?.id}`)
+        fetch(`https://event-sphere-server.vercel.app/event/${id?.id}`, {
+            credentials: 'include'
+        })
             .then(res => res.json())
             .then(data => {
                 // console.log(data);
@@ -54,18 +56,19 @@ const UpdateEvent = () => {
             icon: 'question',
             text: 'Your event will be updated.',
             confirmButtonText: 'Yes, update..',
-            showCancelButton:true,
+            showCancelButton: true,
             cancelButtonText: 'Go back...',
             confirmButtonColor: 'green',
             cancelButtonColor: 'red'
         }).then(result => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/updateEvent/${id?.id}`, {
+                fetch(`https://event-sphere-server.vercel.app/updateEvent/${id?.id}`, {
                     method: "PUT",
                     headers: {
                         'content-type': 'application/json'
                     },
-                    body: JSON.stringify(updatedEvent)
+                    body: JSON.stringify(updatedEvent),
+                    credentials: 'include'
                 })
                     .then(res => res.json())
                     .then(data => {

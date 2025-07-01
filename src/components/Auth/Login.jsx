@@ -32,7 +32,7 @@ const Login = () => {
             return setInputErr('Fill the fields to login.')
         }
 
-        fetch('http://localhost:3000/login', {
+        fetch('https://event-sphere-server.vercel.app/login', {
             method: "POST",
             headers: {
                 'content-type': 'application/json'
@@ -44,7 +44,7 @@ const Login = () => {
             .then(data => {
 
                 if (data?.message === 'No user found with the email address!') {
-                   return Swal.fire({
+                    return Swal.fire({
                         title: 'Failed!',
                         text: 'No account found with this email. Create a new account.',
                         icon: 'error',

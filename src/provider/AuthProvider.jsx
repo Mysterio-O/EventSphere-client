@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const res = await fetch('http://localhost:3000/user/profile', {
+                const res = await fetch('https://event-sphere-server.vercel.app/user/profile', {
                     credentials: 'include', // 🍪 important to include cookies
                 });
                 if (res.ok) {
@@ -33,7 +33,7 @@ const AuthProvider = ({ children }) => {
     console.log(user);
 
     const logout = async () => {
-        await fetch('http://localhost:3000/logout', {
+        await fetch('https://event-sphere-server.vercel.app/logout', {
             method: 'POST',
             credentials: 'include'
         });

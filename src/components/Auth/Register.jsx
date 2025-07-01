@@ -93,11 +93,12 @@ const Register = () => {
         console.log(userInfo);
 
         if (userInfo) {
-            fetch('http://localhost:3000/register', {
+            fetch('https://event-sphere-server.vercel.app/register', {
                 method: "POST",
                 headers: {
                     'content-type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify(userInfo)
             })
                 .then(res => res.json())

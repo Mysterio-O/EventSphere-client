@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../../provider/AuthProvider';
+import { Link } from 'react-router';
 
 const UpcomingEvents = () => {
 
@@ -11,13 +12,17 @@ const UpcomingEvents = () => {
     const [joinedEventIds, setJoinedEventIds] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:3000/upcomingEvents')
+        fetch('https://event-sphere-server.vercel.app/upcomingEvents', {
+            credentials: 'include'
+        })
             .then(res => res.json())
-            .then(data => {
+            .then(async (data) => {
+                console.log(data)
                 setUpcomingEvents(data)
-                const joined = data.filter(ev => ev?.joinedMembers?.(user?.email)).map(ev => ev._id?.toString());
+                const joined = data?.filter(ev => ev?.joinedMembers?.includes(user?.email))?.map(ev => ev._id?.toString());
 
-                setJoinedEventIds(joined || []);
+
+                setJoinedEventIds(joined);
             })
             .catch(err => console.error('Error loading upcoming events:', err));
     }, [user]);
@@ -46,11 +51,12 @@ const UpcomingEvents = () => {
             },
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/joinEvent/${id}?email=${user?.email}`, {
+                fetch(`https://event-sphere-server.vercel.app/joinEvent/${id}?email=${user?.email}`, {
                     method: "PATCH",
                     headers: {
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    credentials: 'include'
                 })
                     .then(res => res.json())
                     .then(data => {
@@ -114,15 +120,20 @@ const UpcomingEvents = () => {
                                     <p className="text-sm mb-1">👤 Added by: {event.addedBy}</p>
                                     <p className="text-sm mb-1">👥 Attendees: {event.attendeeCount}</p>
                                 </div>
-                                <button
-                                    disabled={isJoined}
-                                    onClick={() => handleJoinEvent(event?._id, event?.eventTitle)}
-                                    className={`px-4 py-2 rounded-md transition duration-200 
+                                {
+                                    user ? <button
+                                        disabled={isJoined}
+                                        onClick={() => handleJoinEvent(event?._id, event?.eventTitle)}
+                                        className={`px-4 py-2 rounded-md transition duration-200 
                                 ${isJoined
-                                            ? 'bg-gray-400 text-white cursor-not-allowed'
-                                            : 'bg-blue-500 hover:bg-blue-600 text-white'}`}>
-                                    {isJoined ? 'Joined' : 'Join Now'}
-                                </button>
+                                                ? 'bg-gray-400 text-white cursor-not-allowed'
+                                                : 'bg-blue-500 hover:bg-blue-600 text-white'}`}>
+                                        {isJoined ? 'Joined' : 'Join Now'}
+                                    </button>
+                                        : <Link to="/auth/login">
+                                            <p className='hover:underline-offset-1'>Sign In to join</p>
+                                        </Link>
+                                }
                             </motion.div>
                         )
                     })}

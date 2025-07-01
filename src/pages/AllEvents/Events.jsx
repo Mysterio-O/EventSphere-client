@@ -17,7 +17,9 @@ const Events = () => {
     const [isSortOpen, setIsSortOpen] = useState(false);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/events?filterByDate=${sort}`)
+        fetch(`https://event-sphere-server.vercel.app/events?filterByDate=${sort}`, {
+            credentials: 'include'
+        })
             .then(res => res.json())
             .then(data => {
                 setAllEvents(data?.events || []);
@@ -55,11 +57,12 @@ const Events = () => {
             },
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/joinEvent/${id}?email=${user?.email}`, {
+                fetch(`https://event-sphere-server.vercel.app/joinEvent/${id}?email=${user?.email}`, {
                     method: "PATCH",
                     headers: {
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    credentials: 'include'
                 })
                     .then(res => res.json())
                     .then(data => {
@@ -199,7 +202,7 @@ const Events = () => {
             </div>
 
             {
-                filteredEvents.length < 1 ? <EmptyPage keywords={searchValue}/>
+                filteredEvents.length < 1 ? <EmptyPage keywords={searchValue} />
                     : <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
                         {filteredEvents.map((event, idx) => {
                             const isJoined = joinedEventIds.includes(event._id);

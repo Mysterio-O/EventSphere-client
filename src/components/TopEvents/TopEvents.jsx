@@ -9,7 +9,9 @@ const TopEvents = () => {
 
     useEffect(() => {
         // Fetch top 5 events sorted by attendeeCount descending
-        fetch('http://localhost:3000/topEvents')
+        fetch('https://event-sphere-server.vercel.app/topEvents', {
+            credentials: 'include'
+        })
             .then(res => res.json())
             .then(data => {
                 if (data?.message === "didn't found top events data") {
